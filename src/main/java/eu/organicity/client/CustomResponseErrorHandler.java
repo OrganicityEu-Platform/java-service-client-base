@@ -1,12 +1,12 @@
 package eu.organicity.client;
 
 import eu.organicity.client.exception.UnauthorizedException;
-import org.apache.commons.io.IOUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.web.client.ResponseErrorHandler;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.StringWriter;
 import java.util.logging.Logger;
 
@@ -35,8 +35,10 @@ public class CustomResponseErrorHandler implements ResponseErrorHandler {
                     LOGGER.info("Status code: " + clientHttpResponse.getStatusCode());
                     LOGGER.info("Response " + clientHttpResponse.getStatusText());
                     final StringWriter writer = new StringWriter();
-                    IOUtils.copy(clientHttpResponse.getBody(), writer);
-                    LOGGER.info(writer.toString());
+                    InputStream inputStream = clientHttpResponse.getBody();
+                    byte[] buffer = new byte[1024];
+                    inputStream.read(buffer);
+                    LOGGER.info(new String(buffer, "UTF-8"));
                     break;
             }
 
