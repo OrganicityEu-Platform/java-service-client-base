@@ -8,9 +8,9 @@ import org.springframework.web.client.RestTemplate;
 public class OrganicityServiceBaseClient {
 
     protected final RestTemplate restTemplate;
-    private String token;
+    protected String token;
     protected HttpHeaders headers;
-    private HttpEntity<String> req;
+    protected HttpEntity<String> req;
 
     public OrganicityServiceBaseClient() {
         this("");
