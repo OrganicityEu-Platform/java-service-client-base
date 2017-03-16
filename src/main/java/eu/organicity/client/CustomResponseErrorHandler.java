@@ -7,7 +7,6 @@ import org.springframework.web.client.ResponseErrorHandler;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.StringWriter;
 import java.util.logging.Logger;
 
 
@@ -30,11 +29,15 @@ public class CustomResponseErrorHandler implements ResponseErrorHandler {
         if (clientHttpResponse.getStatusCode() != HttpStatus.OK) {
             switch (clientHttpResponse.getStatusCode()) {
                 case UNAUTHORIZED:
+                    LOGGER.info("Response " + clientHttpResponse.getStatusText());
+                    InputStream inputStream1 = clientHttpResponse.getBody();
+                    byte[] buffer1 = new byte[1024];
+                    inputStream1.read(buffer1);
+                    LOGGER.info(new String(buffer1, "UTF-8"));
                     throw new UnauthorizedException();
                 default:
                     LOGGER.info("Status code: " + clientHttpResponse.getStatusCode());
                     LOGGER.info("Response " + clientHttpResponse.getStatusText());
-                    final StringWriter writer = new StringWriter();
                     InputStream inputStream = clientHttpResponse.getBody();
                     byte[] buffer = new byte[1024];
                     inputStream.read(buffer);
